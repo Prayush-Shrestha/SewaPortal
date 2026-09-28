@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { font-size: 15px; }
+body {
+  background-color: #FDF8F3;
+  color: #1C1917;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid #C2410C;
+  outline-offset: 2px;
+}
+
+/* tables */
+.table-wrap { @apply overflow-x-auto rounded-lg border border-line bg-white; }
+table.data { @apply w-full text-sm; }
+table.data thead { @apply bg-stone-50 text-left text-xs uppercase tracking-wide text-mutedtext; }
+table.data th { @apply px-4 py-2.5 font-medium whitespace-nowrap; }
+table.data td { @apply px-4 py-3 border-t border-line align-middle; }
+table.data tr:hover td { @apply bg-orange-50/50; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 8px; border: 2px solid #FDF8F3; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* skeleton shimmer */
+@keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+.skeleton {
+  background: linear-gradient(90deg, #f5f5f4 25%, #e7e5e4 37%, #f5f5f4 63%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+/* mobile card stacking helper */
+@media (max-width: 640px) {
+  .stack-cards thead { display: none; }
+}
+
+input, select, textarea { font-size: 0.9rem; }
