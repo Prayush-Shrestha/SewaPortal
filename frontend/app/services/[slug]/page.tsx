@@ -67,7 +67,7 @@ export default function ServiceDetailPage() {
           <p className="text-xs text-mutedtext">{service.processingTime} · receipt issued instantly</p>
           {done ? (
             <div className="mt-4 rounded-md bg-green-50 p-3 text-sm text-green-800">
-              Application {done} created. <button onClick={() => router.push("/applications")} className="font-medium underline">Track it →</button>
+              Application {done} created. <button onClick={() => router.push("/applications")} className="link">Track it →</button>
             </div>
           ) : (
             <Button className="mt-4 w-full" onClick={() => setOpen(true)}>Apply now</Button>

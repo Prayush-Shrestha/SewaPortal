@@ -5,18 +5,55 @@ function getToken(): string | null {
   return localStorage.getItem("csp_token");
 }
 
+/** HTTP error (has status) vs network failure (status undefined). */
+export class ApiError extends Error {
+  status?: number;
+  constructor(message: string, status?: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
+function errorMessage(data: unknown, status: number): string {
+  if (data && typeof data === "object") {
+    const d = data as Record<string, unknown>;
+    if (typeof d.detail === "string" && d.detail) return d.detail;
+    const parts: string[] = [];
+    for (const [k, v] of Object.entries(d)) {
+      const msgs = Array.isArray(v) ? v.map(String).join(" ") : String(v);
+      parts.push(k === "non_field_errors" ? msgs : `${k}: ${msgs}`);
+    }
+    if (parts.length) return parts.join(" ");
+  }
+  if (typeof data === "string" && data) return data;
+  return `Request failed (${status}).`;
+}
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
-  const res = await fetch(`${baseUrl}${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(options.headers || {}),
-    },
-  });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  return res.json() as Promise<T>;
+  let res: Response;
+  try {
+    res = await fetch(`${baseUrl}${path}`, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(options.headers || {}),
+      },
+    });
+  } catch {
+    throw new ApiError("Cannot reach the server. Check your connection.");
+  }
+  if (res.status === 204) return undefined as T;
+  let data: unknown = null;
+  try {
+    data = await res.json();
+  } catch {
+    data = null;
+  }
+  if (!res.ok) throw new ApiError(errorMessage(data, res.status), res.status);
+  return data as T;
 }
 
 export const api = {

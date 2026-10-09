@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import Profile
 
@@ -121,3 +122,19 @@ class MeUpdateSerializer(serializers.ModelSerializer):
             setattr(profile, attr, value)
         profile.save()
         return instance
+
+
+class EmailOrUsernameTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """Allow logging in with either the username or the email address."""
+
+    def validate(self, attrs):
+        login = (attrs.get(self.username_field) or "").strip()
+        if login and "@" in login:
+            try:
+                attrs = {
+                    **attrs,
+                    self.username_field: User.objects.get(email__iexact=login).username,
+                }
+            except User.DoesNotExist:
+                pass
+        return super().validate(attrs)

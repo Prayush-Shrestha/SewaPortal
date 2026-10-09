@@ -22,8 +22,8 @@ export default function LoginPage() {
     if (password.length < 6) { setErr("Password must be at least 6 characters."); return; }
     setBusy(true);
     try {
-      await login(email, password);
-      router.push(email === "admin@portal.np" ? "/admin" : "/dashboard");
+      const u = await login(email, password);
+      router.push(u.role === "admin" ? "/admin" : "/dashboard");
     } catch (e: unknown) {
       setErr(e instanceof Error ? e.message : "Login failed.");
     } finally { setBusy(false); }

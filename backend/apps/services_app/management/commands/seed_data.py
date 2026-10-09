@@ -80,8 +80,11 @@ class Command(BaseCommand):
         # --- Users ---
         admin, created = User.objects.get_or_create(
             username="admin",
-            defaults={"email": "admin@example.com", "is_staff": True, "is_superuser": True},
+            defaults={"email": "admin@portal.np", "is_staff": True, "is_superuser": True},
         )
+        # Keep the documented demo admin email in sync on existing DBs.
+        if admin.email != "admin@portal.np":
+            admin.email = "admin@portal.np"
         admin.set_password("admin123")
         admin.is_staff = True
         admin.is_superuser = True

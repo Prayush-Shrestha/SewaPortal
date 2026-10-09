@@ -21,7 +21,7 @@ export default function ForgotPasswordPage() {
           <p className="mt-1 text-sm text-mutedtext">We&apos;ll email a 6-digit code valid for 15 minutes.</p>
           {sent ? (
             <div className="mt-4 rounded-md bg-green-50 p-3 text-sm text-green-800">
-              Reset link sent to {email}. Check inbox and spam. <Link href="/login" className="font-medium underline">Back to login</Link>
+              Reset link sent to {email}. Check inbox and spam. <Link href="/login" className="link">Back to login</Link>
             </div>
           ) : (
             <form onSubmit={submit} className="mt-4 space-y-3">

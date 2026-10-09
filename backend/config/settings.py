@@ -131,7 +131,15 @@ SIMPLE_JWT = {
 # --- CORS ---
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:3000").rstrip("/")
 CORS_ALLOWED_ORIGINS = list(
-    dict.fromkeys([FRONTEND_URL, "http://localhost:3000", "http://127.0.0.1:3000"])
+    dict.fromkeys(
+        [
+            FRONTEND_URL,
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:3003",
+            "http://127.0.0.1:3003",
+        ]
+    )
 )
 CORS_ALLOW_CREDENTIALS = True
 

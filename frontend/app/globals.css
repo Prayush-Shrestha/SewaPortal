@@ -15,6 +15,30 @@ body {
   outline-offset: 2px;
 }
 
+/* human, on-palette links — never fall back to browser default blue/purple */
+@layer base {
+  a:where(:not([class])) {
+    color: #9A3412;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  a:where(:not([class])):visited {
+    color: #9A3412;
+  }
+  a:where(:not([class])):hover {
+    color: #C2410C;
+  }
+}
+
+@layer components {
+  .link {
+    @apply font-medium text-primary-dark underline decoration-primary/40 underline-offset-2 transition-colors hover:text-primary hover:decoration-primary;
+  }
+  .link:visited {
+    @apply text-primary-dark;
+  }
+}
+
 /* tables */
 .table-wrap { @apply overflow-x-auto rounded-lg border border-line bg-white; }
 table.data { @apply w-full text-sm; }

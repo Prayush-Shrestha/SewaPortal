@@ -2,9 +2,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 
-from apps.users.views import MeView, RegisterView
+from apps.users.views import LoginView, MeView, RegisterView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -13,7 +13,7 @@ urlpatterns = [
         include(
             [
                 path("register/", RegisterView.as_view(), name="auth-register"),
-                path("login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+                path("login/", LoginView.as_view(), name="token_obtain_pair"),
                 path("refresh/", TokenRefreshView.as_view(), name="token_refresh"),
                 path("me/", MeView.as_view(), name="auth-me"),
             ]

@@ -1,13 +1,19 @@
 from django.contrib.auth.models import User
 from rest_framework import generics, permissions, viewsets
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import Profile
 from .serializers import (
+    EmailOrUsernameTokenObtainPairSerializer,
     MeUpdateSerializer,
     ProfileSerializer,
     RegisterSerializer,
     UserSerializer,
 )
+
+
+class LoginView(TokenObtainPairView):
+    serializer_class = EmailOrUsernameTokenObtainPairSerializer
 
 
 class RegisterView(generics.CreateAPIView):
